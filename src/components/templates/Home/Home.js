@@ -1,23 +1,31 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Layout } from 'antd';
+import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
 import './home.scss';
-// import { AiTwotoneDelete, AiFillEdit } from 'react-icons/ai';
-// import { useHistory } from 'react-router-dom';
+import useInitialState from '../../../utils/hook/useInitialState';
 
 export default function Home() {
-  // const history = useHistory();
+  const history = useHistory();
   const { Header, Content } = Layout;
   const [search, setSearch] = useState('');
+  // const API = 'https://suministros-3p29xlxfi.vercel.app/api/articles';
+  const API = 'http://localhost:3000/api/articles';
+  const initialState = useInitialState(API);
+  const articles = Object.values(initialState);
+  console.info(articles);
 
-  // const editArticle = (id) => {
-  //   history.push(`articulos/actualizar/${id}`);
-  // };
+  const editArticle = (id) => {
+    history.push(`articulos/actualizar/${id}`);
+  };
 
   function handleProductSearch(e) {
     setSearch(e.target.value.toLowerCase());
   }
+
+  // onClick={() => { onDeleteArticle(article.id); }}
 
   return (
     <Layout className="layout">
@@ -36,21 +44,21 @@ export default function Home() {
           />
         </section>
         <section className="layout-article_groupcard">
-          {/* { articles.map((article) => (
-            <div className="layout-article_card" key={article.Name}>
-              <img src={articles.image} alt={article.Name} />
+          { articles.map((article) => (
+            <div className="layout-article_card" key={article.IdPS}>
+              <img src={initialState.image} alt={article.name} />
               <span className="information">
                 <p>
                   <strong>ID: </strong>
-                  {article.IDPS}
+                  {article.IdPS}
                 </p>
                 <p>
                   <strong>Nombre: </strong>
-                  {article.Name}
+                  {article.name}
                 </p>
                 <p>
                   <strong>Presentación: </strong>
-                  {article.Presentation}
+                  {article.presentation}
                 </p>
                 <p>
                   <strong>Precio: </strong>
@@ -61,14 +69,14 @@ export default function Home() {
                   {article.concept}
                 </p>
                 <button type="button">
-                  <AiTwotoneDelete onClick={() => { onDeleteArticle(article.id); }} />
+                  <AiTwotoneDelete />
                 </button>
                 <button type="button">
                   <AiFillEdit onClick={() => { editArticle(article.id); }} />
                 </button>
               </span>
             </div>
-          ))} */}
+          ))}
         </section>
       </Content>
     </Layout>
